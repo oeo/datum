@@ -1,2 +1,2 @@
-# burst
-`burst` is a rest framework designed for rapid development.
+# datum
+`datum` is a rest framework designed for rapid development.
