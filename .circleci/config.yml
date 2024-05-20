@@ -38,13 +38,14 @@ jobs:
       - aws-cli/setup
       - run: yarn build
       - run: yarn get-config
-      - run: sls deploy --verbose
+      # - run: sls deploy --verbose
+      - run: sls deploy -c serverless-<< parameters.service >>.yml -s << parameters.stage >> --verbose
 workflows:
   default:
     jobs:
       - deploy:
           name: deploy_dev
-          stage: datum-dev
+          stage: dev
           service: dev
           context: build
       - deploy_prod_approval:
@@ -52,7 +53,7 @@ workflows:
           requires: deploy_dev
       - deploy:
           name: deploy_prod
-          stage: datum-prod
+          stage: prod
           service: prod
           context: build
           requires:
