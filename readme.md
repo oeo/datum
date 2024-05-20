@@ -99,9 +99,9 @@ model = mongoose.model modelOpts.name, Event
 module.exports = EXPOSE(model)
 ```
 
-#### CRUD
+### CRUD
 
-*** Listing all objects ***
+#### Listing all items
 
 Simply request `GET /events` to get a paginated list of documents stored.
 
@@ -109,7 +109,7 @@ You can utilize options to paginate over the data like this: `GET /events?limit=
 
 This will yield an expected result, like this:
 
-```json
+```javascript
 {
   "ok": true,
   "response": {
@@ -149,7 +149,9 @@ This will yield an expected result, like this:
         "ctime": 1716182212,
         "__v": 0
       },
-      [...]
+      //
+      // ...
+      //
       {
         "_id": "VpgJiQBo81",
         "event": "user_login",
@@ -181,7 +183,7 @@ It also provides some heurisitics that contain the request details and the elaps
 time duration it took the request to be processed. This is metadata is standard
 for all responses that the project generates.
 
-*** Creating new objects ***
+#### Creating a new item
 
 You can create a new event object in two ways, one is traditional and the other is an http override,
 which is handy for developing locally.
@@ -206,7 +208,7 @@ In this example we'll call the `changeEvent` function over REST.
 The response for this approach will be the modified document or an error if this change
 somehow breaks the model validation rules.
 
-```json
+```javascript
 {
   "ok": true,
   "response": {
@@ -242,7 +244,7 @@ somehow breaks the model validation rules.
 The response for this approach will be the return value, echoing the param
 data that you provided in the `pong` data field.
 
-```json
+```javascript
 {
   "ok": true,
   "response": {
