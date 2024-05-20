@@ -1,5 +1,5 @@
 <p>
- . <img src="assets/symbol.svg" height="100"/>
+  <img src="assets/symbol.svg" height="100"/>
 </p>
 
 # datum
@@ -48,6 +48,10 @@ yarn dev
 
 By default the local http server will attempt to listen on port 8000.
 You can modify the `.env` file to change this port for local development.
+
+<p>
+  <img src="assets/terminal-dev.png" style="width:500px;height:auto"/>
+</p>
 
 ### Understanding models and auto-exposure
 
