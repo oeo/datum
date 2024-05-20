@@ -16,16 +16,16 @@ a typical controller, having access to both libraries and all models to work fro
 
 ## Production ready
 - Has provided deployment scripting for [Serverless](https://www.serverless.org) and [CircleCI](https://www.circleci.com).
-- Scaled deployments in serverless environments handling well over 25k reqs/sec.
+- Scaled deployments in Serverless environments handling well over 25k reqs/sec.
 - Powers multiple incredibly high volume ecommerce companies in production.
 - Supports staging as well as production instances with unique properties and environments.
-- Supports continuous integration which can automatically deploy serverless staging on master push.
+- Supports continuous integration which can automatically deploy Serverless staging on master push.
 
 ## Why it's great
 - It makes creating complex API backends _fast_.
 - Automatic CRUD generation for ORM models.
 - Automatic model method and static route/endpoint generation (see below).
-- It runs perfect locally then deploys to serverless costing you nothing for your company to run.
+- It runs perfect locally then deploys to Serverless costing you nothing for your company to run.
 - No database management or migration scripts to deal with.
 - Flexible middleware `res.respond()` offering responses in JSON, pretty JSON, JSONP, or XML
 - And more.
@@ -278,19 +278,19 @@ data that you provided in the `pong` data field.
 }
 ```
 
-## Continuous Integration and Serverless
+## Deployment
 <p>
-  <img src="assets/cci.png" style="width:500px"/>
+  <img src="assets/cci.png" style="width:400px"/>
 </p>
 
 Platform is integrated with CircleCI and allows for simple deployment over
 the Serverless platform in a stage and production environment.
 
 <p>
-  <img src="assets/serverless.png" style="width:500px"/>
+  <img src="assets/serverless.png" style="width:400px"/>
 </p>
 
-Some frameworks will allow you to have a serverless deployed product but
+Some frameworks will allow you to have a Serverless deployed product but
 it's a complete shitshow to run it locally as a result of the way it
 was designed. That's not so with datum, you can run your application
 natively and locally and even host it on a VPS or your own dedicated server
