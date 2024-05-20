@@ -3,10 +3,13 @@
 </p>
 
 # datum
-`datum` is a Coffeescript framework that enhances backend development, focusing on complete automatic REST API exposure from Mongoose models.
-The framework favors a heavily opinionated design pattern that encourages placing more complex logic into model methods and statics.
+`datum` is a Node.js framework that improves API development, focusing on complete automatic REST API exposure from Mongoose models.
+The framework favors a heavily opinionated design pattern that encourages placing more complex logic into model methods and statics combined
+with libraries. This increases protoyping and MVP speed while also providing an intuitive pattern
+that is easy to pick up on.
 
-This is in contrast to MVC, where you would typically place your logic in Controllers.
+In contrast to MVC, where you would typically place your logic in Controllers,
+this framework is considered Model/Library/Route (MLR). With the R being optional.
 
 Where logic doesn't fit in the context of a model method or static, you can expose a method within a custom route, which somewhat acts like
 a typical controller, having access to both libraries and all models to work from.
@@ -16,22 +19,20 @@ a typical controller, having access to both libraries and all models to work fro
 - Scaled deployments in serverless environments handling well over 10K+ requests/sec.
 - Powers an ecom CRM with daily sales volume exceeding 1 million dollars, including subscription processing.
 
-## Features
-- Node, Coffeescript2 (ES6 async)
-  - Redis
-  - MongoDB
+## Stack
+- Node JS, (coffeescript2 with ES6 async)
+- Redis
+- MongoDB
 - Basic continuous integration configuration provided for [CircleCI](https://circleci.com/)
 - Flexible middleware `res.respond()` offering responses in JSON, pretty JSON, JSONP, or XML
-_ Auto-expose of code, saving you time:
-  - Mongoose models are automatically as CRUD.
-  - Model methods and statics are also exposed as CRUD on their respective routes.
-  - Encourages a high amount of logic to be placed in the models models themselves.
+_ Auto-expose of code, saving you massive time:
+  - Mongoose models are automatically exposed as CRUD.
+  - Mongoose methods and statics are also exposed as CRUD on their respective routes.
 
 ## Quick start
 
 The project has a minimal amount of prereqs which you probably already have installed if you're a Node developer
 
-1. git [git](https://git-scm.com/downloads)
 1. node version manager [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
 
 ```bash
@@ -266,7 +267,7 @@ data that you provided in the `pong` data field.
 
 ---
 
-## @todo:
+## @todo
 - [x] slightly more comprehensive readme
 - [ ] implement queue/digestion interface utilizing sqs
 - [ ] implement scheduled tasks interface
@@ -275,6 +276,8 @@ data that you provided in the `pong` data field.
   - [ ] add ip whitelist bypass
   - [ ] apiKey management/revoke
   - [ ] allow for passport/gsuite auth
+- [ ] implement a testing solution
+- [ ] 
 
 ---
 
