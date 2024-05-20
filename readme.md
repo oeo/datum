@@ -12,28 +12,32 @@ Where logic doesn't fit in the context of a model method or static, you can expo
 a typical controller, having access to both libraries and all models to work from.
 
 ## Production ready
-- Scaled deployments in serverless environments handling 10k+req/s
-- Powers an e-commerce platform with daily sales exceeding 1 million dollars
+- Has provided deployment scripting for [Serverless](https://www.serverless.org) and [CircleCI](https://www.circleci.com).
+- Scaled deployments in serverless environments handling well over 10K+ requests/sec.
+- Powers an ecom CRM with daily sales volume exceeding 1 million dollars, including subscription processing.
 
 ## Features
-- Node with Coffeescript
-- Utilizes MongoDB for primary persistant document storage
-- Relies on Redis for fast transactional non-critical data
+- Node, Coffeescript2 (ES6 async)
+  - Redis
+  - MongoDB
+- Basic continuous integration configuration provided for [CircleCI](https://circleci.com/)
 - Flexible middleware `res.respond()` offering responses in JSON, pretty JSON, JSONP, or XML
-- Mongoose models are automatically exposed as REST endpoints, allowing for rapid API development
-  - CRUD operations auto-exposed from models, with customizable paths and methods through model configurations
+_ Auto-expose of code, saving you time:
+  - Mongoose models are automatically as CRUD.
+  - Model methods and statics are also exposed as CRUD on their respective routes.
+  - Encourages a high amount of logic to be placed in the models models themselves.
 
 ## Quick start
 
 The project has a minimal amount of prereqs which you probably already have installed if you're a Node developer
 
-1. git
-1. node version manager (nvm-sh/nvm)[https://github.com/nvm-sh/nvm]
+1. git [git](https://git-scm.com/downloads)
+1. node version manager [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
 
 ```bash
 git clone https://github.com/oeo/datum
 cd ./datum
-nvm use
+nvm install
 npm install -g yarn
 yarn
 yarn dev
@@ -95,7 +99,7 @@ model = mongoose.model modelOpts.name, Event
 module.exports = EXPOSE(model)
 ```
 
-### CRUD
+#### CRUD
 
 *** Listing all objects ***
 
@@ -188,7 +192,7 @@ which is handy for developing locally.
 
 2. Method override method: `GET /events?method=post&event=user_signup&name=John+Smith`
 
-### Calling model methods
+#### Invoking model methods
 
 In this example we'll call the `changeEvent` function over REST. 
 `vBXYrWZyzf` respresents the document ID we want to change.
@@ -227,7 +231,7 @@ somehow breaks the model validation rules.
 }
 ```
 
-### Calling model statics over REST
+#### Invoking model statics
 
 1. Traditional
   - Request `POST /events/ping`
@@ -258,7 +262,21 @@ data that you provided in the `pong` data field.
 }
 ```
 
+## auto-loaded components
+- Models in `./models` (as explained earlier)
+- Routes in `./routes`
 
+---
 
+## MIT License
 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in 
+the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of 
+the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission and license should be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR 
+A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER OR NOT 
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
