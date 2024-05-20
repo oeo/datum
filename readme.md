@@ -16,28 +16,31 @@ a typical controller, having access to both libraries and all models to work fro
 
 ## Production ready
 - Has provided deployment scripting for [Serverless](https://www.serverless.org) and [CircleCI](https://www.circleci.com).
-- Scaled deployments in serverless environments handling well over 10K+ requests/sec.
+- Scaled deployments in serverless environments handling well over 25k reqs/sec.
+- Powers multiple incredibly high volume ecommerce companies in production.
 - Supports staging as well as production instances with unique properties and environments.
-- CircleCI automatically deploys staging on master push, approval needs to be given to deploy master.
-- Powers an incredibly high volume payment processing company in production.
+- Supports continuous integration which can automatically deploy serverless staging on master push.
+
+## Why it's great
+- It makes creating complex API backends _fast_.
+- Automatic CRUD generation for ORM models.
+- Automatic model method and static route/endpoint generation (see below).
+- No database management or migration scripts to deal with.
+- Flexible middleware `res.respond()` offering responses in JSON, pretty JSON, JSONP, or XML
+- And more.
 
 ## Stack
-- Node JS, (coffeescript2 with ES6 async)
+- Node JS (Coffeescript2 ES6)
 - Redis
 - MongoDB
-- Basic continuous integration configuration provided for [CircleCI](https://circleci.com/)
-- Flexible middleware `res.respond()` offering responses in JSON, pretty JSON, JSONP, or XML
-_ Auto-expose of code, saving you massive time:
-  - Mongoose models are automatically exposed as CRUD.
-  - Mongoose methods and statics are also exposed as CRUD on their respective routes.
 
 ## Quick start
 
-The project has a minimal amount of prereqs which you probably already have installed if you're a Node developer
+The project has a minimal amount of prereqs which you probably already have installed.
 
-1. Node Version Manager [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
-1. Redis (configured in `.env`)
-1. MongoDB (configured in `.env`)
+1. NVM [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+1. Redis
+1. MongoDB
 
 ```bash
 git clone https://github.com/oeo/datum
@@ -276,14 +279,14 @@ data that you provided in the `pong` data field.
 
 # Continuous Integration and Serverless
 <p>
-  <img src="assets/cci.png" style="height:150px"/>
+  <img src="assets/cci.png" style="width:500px"/>
 </p>
 
 Platform is integrated with CircleCI and allows for simple deployment over
 the Serverless platform in a stage and production environment.
 
 <p>
-  <img src="assets/serverless.png" style="height:150px"/>
+  <img src="assets/serverless.png" style="width:500px"/>
 </p>
 
 Some frameworks will allow you to have a serverless deployed product but
@@ -302,6 +305,7 @@ if you were inclined to do so.
   - [ ] add ip whitelist bypass
   - [ ] api: key management/revoke
   - [ ] allow for passport/gsuite auth
+- [ ] begin documentation
 - [ ] implement a solid testing solution
 
 ---
