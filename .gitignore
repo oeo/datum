@@ -18,6 +18,7 @@ thumbs.db
 node_modules/
 tmp/
 .env
+.env.stage
 .env.production
 package-lock.json
 yarn-lock.json

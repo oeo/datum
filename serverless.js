@@ -6,7 +6,7 @@ let NODE_ENV = process.env.NODE_ENV || 'development';
 let STAGE = `v${majorVersion}`;
 
 if (NODE_ENV == 'development') {
-  STAGE = 'staging';
+  STAGE = 'dev';
 }
 
 module.exports = {
