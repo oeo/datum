@@ -80,12 +80,12 @@ workflows:
     jobs:
       - deploy_staging:
           context: build
-      - deploy_prod_approval:
+      - deploy_production_approval:
           type: approval
           requires:
             - deploy_staging
-      - deploy_prod:
+      - deploy_production:
           context: build
           requires:
-            - deploy_prod_approval
+            - deploy_production_approval
 
