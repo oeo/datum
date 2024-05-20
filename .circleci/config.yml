@@ -5,7 +5,7 @@ jobs:
 
   deploy_staging:
     docker:
-      - image: cimg/node:20
+      - image: cimg/node:21.7
     #docker:
     #  - image: circleci/node:14
     environment:
