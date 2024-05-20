@@ -34,6 +34,8 @@ _ Auto-expose of code, saving you massive time:
 The project has a minimal amount of prereqs which you probably already have installed if you're a Node developer
 
 1. node version manager [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+1. redis (configured in `.env`)
+1. mongodb (configured in `.env`)
 
 ```bash
 git clone https://github.com/oeo/datum
