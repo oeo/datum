@@ -274,6 +274,24 @@ data that you provided in the `pong` data field.
 }
 ```
 
+# Continuous Integration and Serverless
+<p>
+  <img src="assets/cci.png" style="height:150px"/>
+</p>
+
+Platform is integrated with CircleCI and allows for simple deployment over
+the Serverless platform in a stage and production environment.
+
+<p>
+  <img src="assets/serverless.png" style="height:150px"/>
+</p>
+
+Some frameworks will allow you to have a serverless deployed product but
+it's a complete shitshow to run it locally as a result of the way it
+was designed. That's not so with datum, you can run your application
+natively and locally and even host it on a VPS or your own dedicated server
+if you were inclined to do so.
+
 ---
 
 ## @todo
