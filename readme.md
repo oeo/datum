@@ -17,7 +17,9 @@ a typical controller, having access to both libraries and all models to work fro
 ## Production ready
 - Has provided deployment scripting for [Serverless](https://www.serverless.org) and [CircleCI](https://www.circleci.com).
 - Scaled deployments in serverless environments handling well over 10K+ requests/sec.
-- Powers an ecom CRM with daily sales volume exceeding 1 million dollars, including subscription processing.
+- Supports staging as well as production instances with unique properties and environments.
+- CircleCI automatically deploys staging on master push, approval needs to be given to deploy master.
+- Powers an incredibly high volume payment processing company in production.
 
 ## Stack
 - Node JS, (coffeescript2 with ES6 async)
@@ -33,14 +35,15 @@ _ Auto-expose of code, saving you massive time:
 
 The project has a minimal amount of prereqs which you probably already have installed if you're a Node developer
 
-1. node version manager [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
-1. redis (configured in `.env`)
-1. mongodb (configured in `.env`)
+1. Node Version Manager [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+1. Redis (configured in `.env`)
+1. MongoDB (configured in `.env`)
 
 ```bash
 git clone https://github.com/oeo/datum
 cd ./datum
 nvm install
+nvm use
 npm install -g yarn
 yarn
 yarn dev
@@ -275,17 +278,13 @@ data that you provided in the `pong` data field.
 
 ## @todo
 - [x] slightly more comprehensive readme
-- [ ] implement queue/digestion interface utilizing sqs
-- [ ] implement scheduled tasks interface
-- [ ] implement user notification interface that can extend models
+- [x] finish continous integration routine for serverless using cci
+- [ ] implement queue/digestion abstraction for utilizing sqs
 - [ ] robust authentication 
   - [ ] add ip whitelist bypass
   - [ ] api: key management/revoke
   - [ ] allow for passport/gsuite auth
 - [ ] implement a solid testing solution
-- [ ] allow encryption of .env files and only load in ram during deploy
-  - implement automation of something like a modified [binkey](https://github.com/oeo/binkey)
-  - prompt for decryption password on app run and unencrypt .env.binkey in memory
 
 ---
 
