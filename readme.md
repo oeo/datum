@@ -25,6 +25,7 @@ a typical controller, having access to both libraries and all models to work fro
 - It makes creating complex API backends _fast_.
 - Automatic CRUD generation for ORM models.
 - Automatic model method and static route/endpoint generation (see below).
+- It runs perfect locally then deploys to serverless costing you nothing for your company to run.
 - No database management or migration scripts to deal with.
 - Flexible middleware `res.respond()` offering responses in JSON, pretty JSON, JSONP, or XML
 - And more.
