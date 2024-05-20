@@ -208,9 +208,9 @@ In this example we'll call the `changeEvent` function over REST.
 
 1. Traditional
   - Request `POST /events/vBXYrWZyzf/changeEvent`
-  - Body data: `{ newEvent: 'fun_new_event' }`
+  - Body data: `{ newEvent: 'very_unique_event' }`
 
-2. Method override method: `GET /events/vBXYrWZyzf/changeEvent?method=post&newEvent=fun_new_event`
+2. Method override method: `GET /events/vBXYrWZyzf/changeEvent?method=post&newEvent=very_unique_event`
 
 The response for this approach will be the modified document or an error if this change
 somehow breaks the model validation rules.
@@ -278,12 +278,11 @@ data that you provided in the `pong` data field.
 - [ ] implement queue/digestion interface utilizing sqs
 - [ ] implement scheduled tasks interface
 - [ ] implement user notification interface that can extend models
-- [ ] create more robust authentication 
+- [ ] robust authentication 
   - [ ] add ip whitelist bypass
-  - [ ] apiKey management/revoke
+  - [ ] api: key management/revoke
   - [ ] allow for passport/gsuite auth
-- [ ] implement a testing solution
-- [ ] 
+- [ ] implement a solid testing solution
 
 ---
 
