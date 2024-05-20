@@ -2,29 +2,27 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@1.2.1
 jobs:
-  deploy:
+  deploy_dev:
     docker:
       - image: circleci/node:14
+    environment:
+      NODE_ENV: development
     parameters:
-      stage:
-        type: string
-      service:
+      env:
         type: string
     steps:
       - checkout
       - run:
-          name: install serverless
-          command: |
-            sudo npm i -g serverless@3.34.0
+          name: Install Serverless Framework
+          command: npm install -g serverless@3.34.0
       - restore_cache:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
       - run:
-          name: install node deps
-          command: |
-            yarn install
+          name: Install Node Dependencies
+          command: yarn install
       - run:
-          name: prune node deps
+          name: Prune Node Dependencies
           command: |
             curl -sf https://gobinaries.com/tj/node-prune | sh
             sudo npm i -g modclean
@@ -36,25 +34,63 @@ jobs:
             - ./node_modules
           key: cache-5-{{ checksum "yarn.lock" }}
       - aws-cli/setup
-      - run: yarn build
-      - run: yarn get-config
-      # - run: sls deploy --verbose
-      - run: sls deploy -c serverless-<< parameters.service >>.yml -s << parameters.stage >> --verbose
+      - run: 
+          name: Pulling .env file from S3
+          command: NODE_ENV=${NODE_ENV} yarn pull-env
+      - run:
+          name: Deploying on Serverless
+          command: NODE_ENV=${NODE_ENV} sls deploy -c serverless.yml --verbose
+
+  deploy_prod:
+    docker:
+      - image: circleci/node:14
+    environment:
+      NODE_ENV: production
+    parameters:
+      node_env:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Install Serverless Framework
+          command: npm install -g serverless@3.34.0
+      - restore_cache:
+          keys:
+            - cache-5-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Node Dependencies
+          command: yarn install
+      - run:
+          name: Prune Node Dependencies
+          command: |
+            curl -sf https://gobinaries.com/tj/node-prune | sh
+            sudo npm i -g modclean
+            node-prune
+            modclean --run
+            git gc
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-5-{{ checksum "yarn.lock" }}
+      - aws-cli/setup
+      - run: 
+          name: Pulling .env file from S3
+          command: NODE_ENV=${NODE_ENV} yarn pull-env
+      - run:
+          name: Deploying on Serverless
+          command: NODE_ENV=${NODE_ENV} sls deploy -c serverless.yml -s production --verbose
+
 workflows:
-  default:
+  deploy:
     jobs:
-      - deploy:
-          name: deploy_dev
-          stage: dev
-          service: dev
-          context: build
+      - deploy_dev:
+          node_env: dev
       - deploy_prod_approval:
           type: approval
-          requires: deploy_dev
-      - deploy:
-          name: deploy_prod
-          stage: prod
-          service: prod
-          context: build
+          requires:
+            - deploy_dev
+      - deploy_prod:
+          node_env: prod
           requires:
             - deploy_prod_approval
+
