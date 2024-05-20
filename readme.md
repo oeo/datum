@@ -264,13 +264,21 @@ data that you provided in the `pong` data field.
 }
 ```
 
-## auto-loaded components
-- Models in `./models` (as explained earlier)
-- Routes in `./routes`
+---
+
+## @todo:
+- [x] slightly more comprehensive readme
+- [ ] implement queue/digestion interface utilizing sqs
+- [ ] implement scheduled tasks interface
+- [ ] implement user notification interface that can extend models
+- [ ] create more robust authentication 
+  - [ ] add ip whitelist bypass
+  - [ ] apiKey management/revoke
+  - [ ] allow for passport/gsuite auth
 
 ---
 
-## MIT License
+## MIT
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in 
 the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of 
