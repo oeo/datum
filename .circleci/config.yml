@@ -1,15 +1,17 @@
 version: 2.1
+
 orbs:
   aws-cli: circleci/aws-cli@1.2.1
+
 jobs:
 
   deploy_staging:
     docker:
       - image: cimg/node:21.7
-    #docker:
-    #  - image: circleci/node:14
+
     environment:
       NODE_ENV: staging
+
     steps:
       - checkout
       - run:
@@ -18,14 +20,6 @@ jobs:
       - restore_cache:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
-      - run:
-          name: install nvm
-          command: |
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
-            nvm install
-            nvm use
       - run:
           name: yarn install
           command: yarn install
@@ -47,18 +41,20 @@ jobs:
           command: yarn pull-envs
       - run:
           name: serverless deploy
-          command: NODE_ENV=staging sls deploy -c serverless.yml -s staging --verbose
+          command: NODE_ENV=staging sls deploy -c serverless.js -s staging --verbose
 
   deploy_production:
     docker:
-      - image: circleci/node:14
+      - image: cimg/node:21.7
+
     environment:
-      NODE_ENV: production
+      NODE_ENV: staging
+
     steps:
       - checkout
       - run:
           name: Install Serverless Framework
-          command: npm install -g serverless@3.34.0
+          command: sudo npm install -g serverless@3.34.0
       - restore_cache:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
@@ -83,7 +79,7 @@ jobs:
           command: yarn pull-envs
       - run:
           name: Deploying on Serverless
-          command: NODE_ENV=production sls deploy -c serverless.yml -s production --verbose
+          command: NODE_ENV=production sls deploy -c serverless.js -s production --verbose
 
 workflows:
   deploy:
