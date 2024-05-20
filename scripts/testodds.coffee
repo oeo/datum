@@ -19,19 +19,15 @@ run = ->
 
   start = new Date
 
-  #
-  # drop collections
-  #
-  for modelName, _model of (require './../models')
-    try
-      collections = await mongoose.connection.db.listCollections().toArray()
-      if collections.some((col) -> col.name == _model.collection.collectionName)
-        L.debug 'Dropping', modelName
-        await _model.collection.drop()
-    catch e
-      L.error e
+  models = require './../models'
 
-  L.debug 'Starting test'
+  for x in [1..(max = 100)]
+    resp = await models.Events.create {
+      event: _.first _.shuffle ['user_signup','interface_click','user_login']
+      name: _.first _.shuffle ['John Smith', 'Chris Miller', 'Tom Joe']
+    }
+
+  L.success 'Created new events documents', { amount: max }
 
   return { elapsed: new Date() - start }
 

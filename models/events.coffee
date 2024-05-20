@@ -38,8 +38,8 @@ Event.methods.changeEvent = ({ newEvent }) ->
   catch e
     return e
 
-Event.statics.ping = ({ name }) ->
-  return { pong: name }
+Event.statics.ping = ({ pong }) ->
+  return { pong }
 
 model = mongoose.model modelOpts.name, Event
 module.exports = EXPOSE(model)
