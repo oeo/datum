@@ -79,6 +79,8 @@ workflows:
   deploy:
     jobs:
       - deploy_staging:
+          docker:
+            - image: circleci/node:14
           context: build
       - deploy_production_approval:
           type: approval
