@@ -278,7 +278,7 @@ data that you provided in the `pong` data field.
 }
 ```
 
-# Continuous Integration and Serverless
+## Continuous Integration and Serverless
 <p>
   <img src="assets/cci.png" style="width:500px"/>
 </p>
