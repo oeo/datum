@@ -7,7 +7,6 @@
     "test": "coffee scripts/testodds.coffee",
     "deploy": "NODE_ENV=production sls deploy",
     "deploy-dev": "sls deploy",
-    "encrypt-env": "binkey .env.production .env.production.binkey",
     "pull-envs": "sh env-sync.sh pull",
     "push-envs": "sh env-sync.sh push"
   },

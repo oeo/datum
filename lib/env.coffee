@@ -7,5 +7,13 @@ if not env.ENV_SET
 
   require('dotenv').config {
     path: (if env.NODE_ENV is 'production' then __dirname + '/../.env.production' else __dirname + '/../.env')
+    path: (do =>
+      if env.NODE_ENV is 'production'
+        return __dirname + '/../.env.production'
+      if env.NODE_ENV is 'stage'
+        return __dirname + '/../.env.stage'
+      else
+        return __dirname + '/../.env'
+    )
   }
 
