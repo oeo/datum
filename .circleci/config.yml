@@ -5,7 +5,7 @@ jobs:
 
   deploy_staging:
     docker:
-      - image: circleci/node:21
+      - image: circleci/node@4.7
     environment:
       NODE_ENV: staging
     steps:
