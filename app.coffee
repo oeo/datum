@@ -12,6 +12,7 @@ if fs.existsSync(artFile = './ascii.art')
   bulk = fs.readFileSync artFile, 'utf8'
   bulk = bulk.split('package.name').join(packageData.name)
   bulk = bulk.split('package.version').join(packageData.version)
+  bulk = bulk.split('env').join(process.env.NODE_ENV)
   log bulk
 
 _ = require 'lodash'
