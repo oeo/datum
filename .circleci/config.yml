@@ -2,27 +2,25 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@1.2.1
 jobs:
-  deploy_dev:
+
+  deploy_staging:
     docker:
       - image: circleci/node:14
     environment:
-      NODE_ENV: development
-    parameters:
-      env:
-        type: string
+      NODE_ENV: staging
     steps:
       - checkout
       - run:
-          name: Install Serverless Framework
+          name: install serverless
           command: npm install -g serverless@3.34.0
       - restore_cache:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
       - run:
-          name: Install Node Dependencies
+          name: yarn install
           command: yarn install
       - run:
-          name: Prune Node Dependencies
+          name: prune deps
           command: |
             curl -sf https://gobinaries.com/tj/node-prune | sh
             sudo npm i -g modclean
@@ -35,20 +33,17 @@ jobs:
           key: cache-5-{{ checksum "yarn.lock" }}
       - aws-cli/setup
       - run: 
-          name: Pulling .env file from S3
-          command: NODE_ENV=${NODE_ENV} yarn pull-env
+          name: pull env files
+          command: yarn pull-envs
       - run:
-          name: Deploying on Serverless
-          command: NODE_ENV=${NODE_ENV} sls deploy -c serverless.yml --verbose
+          name: serverless deploy
+          command: NODE_ENV=staging sls deploy -c serverless.yml -s staging --verbose
 
-  deploy_prod:
+  deploy_production:
     docker:
       - image: circleci/node:14
     environment:
       NODE_ENV: production
-    parameters:
-      node_env:
-        type: string
     steps:
       - checkout
       - run:
@@ -74,23 +69,23 @@ jobs:
           key: cache-5-{{ checksum "yarn.lock" }}
       - aws-cli/setup
       - run: 
-          name: Pulling .env file from S3
-          command: NODE_ENV=${NODE_ENV} yarn pull-env
+          name: Pulling environment files
+          command: yarn pull-envs
       - run:
           name: Deploying on Serverless
-          command: NODE_ENV=${NODE_ENV} sls deploy -c serverless.yml -s production --verbose
+          command: NODE_ENV=production sls deploy -c serverless.yml -s production --verbose
 
 workflows:
   deploy:
     jobs:
       - deploy_dev:
-          node_env: dev
+          context: build
       - deploy_prod_approval:
           type: approval
           requires:
             - deploy_dev
       - deploy_prod:
-          node_env: prod
+          context: build
           requires:
             - deploy_prod_approval
 
