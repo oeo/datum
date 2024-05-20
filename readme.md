@@ -56,59 +56,6 @@ You can modify the `.env` file to change this port for local development.
   <img src="assets/terminal-dev.png" style="width:500px;height:auto"/>
 </p>
 
-### Understanding models and auto-exposure
-
-The Events model is included by default. It is located at `./models/events.coffee`.
-
-```coffeescript
-# this is the data structure for our event entity
-Event = new Schema {
-
-  event: {
-    type: String
-    required: true
-  }
-
-  player: {
-    type: String
-  }
-
-}, modelOpts.schema
-
-Event.plugin(basePlugin)
-
-#
-# this is an entity method, in datum the inputs for all
-# model methods that you want to expose must be a single
-# object which will respresent the entire object passed
-# in the postdata from the browser.
-#
-Event.methods.changeEvent = ({ newEvent }) ->
-  @event = newEvent
-
-  try
-    return await @save()
-  catch e
-    return e
-
-#
-# this is a static method, it doesn't manipulate any data
-# but it will respond to you without whatever you place in
-# the response string in your post data.
-#
-Event.statics.ping = ({ response }) ->
-  return { pong: response }
-
-#
-# this code wraps the model so it can be exposed for rest
-# consumption as it is loaded. you can also omit this, just
-# export the model and it will be private for all requests
-# and used only for internal purposes.
-#
-model = mongoose.model modelOpts.name, Event
-module.exports = EXPOSE(model)
-```
-
 ### CRUD
 
 #### Listing all items
@@ -193,7 +140,60 @@ It also provides some heurisitics that contain the request details and the elaps
 time duration it took the request to be processed. This is metadata is standard
 for all responses that the project generates.
 
-#### Creating a new item
+### Models and auto-expose
+
+The Events model is included by default. It is located at `./models/events.coffee`.
+
+```coffeescript
+# this is the data structure for our event entity
+Event = new Schema {
+
+  event: {
+    type: String
+    required: true
+  }
+
+  player: {
+    type: String
+  }
+
+}, modelOpts.schema
+
+Event.plugin(basePlugin)
+
+#
+# this is an entity method, in datum the inputs for all
+# model methods that you want to expose must be a single
+# object which will respresent the entire object passed
+# in the postdata from the browser.
+#
+Event.methods.changeEvent = ({ newEvent }) ->
+  @event = newEvent
+
+  try
+    return await @save()
+  catch e
+    return e
+
+#
+# this is a static method, it doesn't manipulate any data
+# but it will respond to you without whatever you place in
+# the response string in your post data.
+#
+Event.statics.ping = ({ response }) ->
+  return { pong: response }
+
+#
+# this code wraps the model so it can be exposed for rest
+# consumption as it is loaded. you can also omit this, just
+# export the model and it will be private for all requests
+# and used only for internal purposes.
+#
+model = mongoose.model modelOpts.name, Event
+module.exports = EXPOSE(model)
+```
+
+#### Creating a new document
 
 You can create a new event object in two ways, one is traditional and the other is an http override,
 which is handy for developing locally.
@@ -202,7 +202,7 @@ which is handy for developing locally.
   - Request `POST /events`
   - Body data: `{ "event": "user_signup", "name": "John Smith" }`
 
-2. Method override method: `GET /events?method=post&event=user_signup&name=John+Smith`
+2. Query override method: `GET /events?method=post&event=user_signup&name=John+Smith`
 
 #### Invoking model methods
 
@@ -213,7 +213,7 @@ In this example we'll call the `changeEvent` function over REST.
   - Request `POST /events/vBXYrWZyzf/changeEvent`
   - Body data: `{ newEvent: 'very_unique_event' }`
 
-2. Method override method: `GET /events/vBXYrWZyzf/changeEvent?method=post&newEvent=very_unique_event`
+2. Query override method: `GET /events/vBXYrWZyzf/changeEvent?method=post&newEvent=very_unique_event`
 
 The response for this approach will be the modified document or an error if this change
 somehow breaks the model validation rules.
