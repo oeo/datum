@@ -60,7 +60,7 @@ pagination = (opts = {}) ->
   used = []
   links = []
 
-  activePageIndex = null
+  activePageIndex = 0
 
   i = 0
   for page in pages
