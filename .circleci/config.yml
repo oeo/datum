@@ -4,15 +4,13 @@ orbs:
 jobs:
 
   deploy_staging:
-    docker:
-      - image: circleci/cci-demo-docker-primary:0.0.1
     environment:
       NODE_ENV: staging
     steps:
       - checkout
       - run:
           name: install serverless
-          command: npm install -g serverless@3.34.0
+          command: sudo npm install -g serverless@3.34.0
       - restore_cache:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
