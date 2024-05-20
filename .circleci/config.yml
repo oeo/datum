@@ -1,0 +1,59 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@1.2.1
+jobs:
+  deploy:
+    docker:
+      - image: circleci/node:14
+    parameters:
+      stage:
+        type: string
+      service:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: install serverless
+          command: |
+            sudo npm i -g serverless@3.34.0
+      - restore_cache:
+          keys:
+            - cache-5-{{ checksum "yarn.lock" }}
+      - run:
+          name: install node deps
+          command: |
+            yarn install
+      - run:
+          name: prune node deps
+          command: |
+            curl -sf https://gobinaries.com/tj/node-prune | sh
+            sudo npm i -g modclean
+            node-prune
+            modclean --run
+            git gc
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: cache-5-{{ checksum "yarn.lock" }}
+      - aws-cli/setup
+      - run: yarn build
+      - run: yarn get-config
+      - run: sls deploy --verbose
+workflows:
+  default:
+    jobs:
+      - deploy:
+          name: deploy_dev
+          stage: datum-dev
+          service: dev
+          context: build
+      - deploy_prod_approval:
+          type: approval
+          requires: deploy_dev
+      - deploy:
+          name: deploy_prod
+          stage: datum-prod
+          service: prod
+          context: build
+          requires:
+            - deploy_prod_approval
