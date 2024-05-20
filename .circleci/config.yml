@@ -48,7 +48,7 @@ jobs:
       - checkout
       - run:
           name: Install Serverless Framework
-          command: npm install -g serverless@3.34.0
+          command: sudo npm install -g serverless@3.34.0
       - restore_cache:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
