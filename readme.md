@@ -283,6 +283,9 @@ data that you provided in the `pong` data field.
   - [ ] api: key management/revoke
   - [ ] allow for passport/gsuite auth
 - [ ] implement a solid testing solution
+- [ ] allow encryption of .env files and only load in ram during deploy
+  - implement automation of something like a modified [binkey](https://github.com/oeo/binkey)
+  - prompt for decryption password on app run and unencrypt .env.binkey in memory
 
 ---
 
