@@ -1,6 +1,6 @@
 #!/bin/bash
 
-S3_BUCKET="datum-env-files"
+S3_BUCKET="alrkb963-env-files"
 S3_REGION="us-east-1"
 
 # Check if AWS credentials are set

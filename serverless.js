@@ -2,12 +2,7 @@
 const packageJson = require('./package.json');
 const majorVersion = packageJson.version.split('.')[0];
 
-let NODE_ENV = (process.env.NODE_ENV || 'local')
-
-if (NODE_ENV == 'local'){
-  process.env.NODE_ENV = 'local';
-}
-
+let NODE_ENV = (process.env.NODE_ENV || 'staging')
 let STAGE = NODE_ENV
 
 module.exports = {

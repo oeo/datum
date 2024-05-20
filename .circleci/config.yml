@@ -21,8 +21,8 @@ jobs:
           keys:
             - cache-5-{{ checksum "yarn.lock" }}
       - run:
-          name: yarn install
-          command: yarn install
+          name: yarn
+          command: yarn
       - run:
           name: prune deps
           command: |

@@ -224,7 +224,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/datum/production/1716205822534-2024-05-20T11:50:22.534Z/datum.zip"
+                "S3Key": "serverless/datum/production/1716207990985-2024-05-20T12:26:30.985Z/datum.zip"
               },
               "Handler": "s_app.handler",
               "Runtime": "nodejs18.x",
@@ -248,14 +248,14 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersionDIWRiWVi26ibUbXfVHH0Qvaa3v8Tkm9Y5Ux2EzRvAo": {
+          "AppLambdaVersionc3DTB57ztPlSrlsNttHANZlI1akUHj7roaCExWBMw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "wpI8htzzvstux7SmNY1b2EX6eR0l28FVW9up5mc2fRY="
+              "CodeSha256": "/2LbzudsH3DQiqZWH4UYg7oWDRxnpAno3PREWZKQlqk="
             }
           },
           "ApiGatewayRestApi": {
@@ -473,7 +473,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1716205817676": {
+          "ApiGatewayDeployment1716207985302": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -634,7 +634,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/datum/production/1716205822534-2024-05-20T11:50:22.534Z/custom-resources.zip"
+                "S3Key": "serverless/datum/production/1716207990985-2024-05-20T12:26:30.985Z/custom-resources.zip"
               },
               "FunctionName": "datum-production-custom-resource-apigw-cw-role",
               "Handler": "api-gateway-cloud-watch-role/handler.handler",
@@ -676,7 +676,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersionDIWRiWVi26ibUbXfVHH0Qvaa3v8Tkm9Y5Ux2EzRvAo"
+              "Ref": "AppLambdaVersionc3DTB57ztPlSrlsNttHANZlI1akUHj7roaCExWBMw"
             },
             "Export": {
               "Name": "sls-datum-production-AppLambdaFunctionQualifiedArn"
@@ -812,8 +812,7 @@
     },
     "plugins": [
       "serverless-offline",
-      "serverless-dotenv-plugin",
-      "serverless-domain-manager"
+      "serverless-dotenv-plugin"
     ],
     "pluginsData": {},
     "functions": {
@@ -875,7 +874,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersionDIWRiWVi26ibUbXfVHH0Qvaa3v8Tkm9Y5Ux2EzRvAo"
+        "versionLogicalId": "AppLambdaVersionc3DTB57ztPlSrlsNttHANZlI1akUHj7roaCExWBMw"
       }
     },
     "configValidationMode": "warn",
@@ -908,7 +907,7 @@
     "artifact": "/Users/taky/www/datum/.serverless/datum.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/datum/production/1716205822534-2024-05-20T11:50:22.534Z",
+    "artifactDirectoryName": "serverless/datum/production/1716207990985-2024-05-20T12:26:30.985Z",
     "artifact": "datum.zip"
   }
 }
