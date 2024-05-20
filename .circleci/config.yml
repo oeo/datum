@@ -78,12 +78,12 @@ jobs:
 workflows:
   deploy:
     jobs:
-      - deploy_dev:
+      - deploy_staging:
           context: build
       - deploy_prod_approval:
           type: approval
           requires:
-            - deploy_dev
+            - deploy_staging
       - deploy_prod:
           context: build
           requires:
