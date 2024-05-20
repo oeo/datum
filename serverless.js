@@ -48,7 +48,7 @@ module.exports = {
   plugins: [
     'serverless-offline',
     'serverless-dotenv-plugin',
-    'serverless-domain-manager',
+    //'serverless-domain-manager',
   ],
   custom: {
     dotenv: {

@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.3",
-    "serverless-domain-manager": "^7.3.3",
+    "serverless-domain-manager": "^7.3.8",
     "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^13.3.0"
   }
