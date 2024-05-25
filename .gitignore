@@ -43,3 +43,4 @@ yarn-lock.json
 *.7z
 *.rar
 
+.serverless
