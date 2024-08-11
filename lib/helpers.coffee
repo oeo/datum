@@ -3,16 +3,18 @@
 { env, exit } = process
 
 _ = require 'lodash'
+url = require 'url'
+qs = require 'querystring'
+crypto = require 'crypto'
 
 UUID = require('short-unique-id')
-
 uuid = new UUID { length: 10 }
 
 helpers = {
   uuid: -> uuid.rnd()
   wait: (ms) ->
     new Promise (resolve, reject) ->
-      setTimeout res, ms
+      setTimeout resolve, ms
 }
 
 helpers.validEmail = (email) ->
@@ -83,11 +85,11 @@ helpers.deepPick = (obj, paths) ->
 
 helpers.time = (format = 'unix') ->
   if format is 'ms' then return Date.now()
-  return Math.floor(Date.now()/1000)
+  return Math.floor(Date.now() / 1000)
 
 helpers.extendAll = (arr, obj) ->
   arr = _.map arr, (x) ->
-    x[k] ?= v for k,v of obj
+    x[k] ?= v for k, v of obj
     x
   arr
 
@@ -122,5 +124,172 @@ helpers.sleep = (ms) ->
   new Promise (resolve, reject) ->
     setTimeout resolve, ms
 
+helpers.appendQueryString = (urlStr, objs...) ->
+  urlParts = url.parse(urlStr)
+  append = []
+
+  try append.push qs.parse(urlParts.query)
+
+  for obj in objs
+    # url str
+    if typeof obj is 'string' and obj.indexOf('://') > -1
+      parts = url.parse obj
+      try append.push qs.parse(parts.query)
+      continue
+
+    # query str
+    if typeof obj is 'string'
+      if obj.substr(0, 1) is '?' then obj = obj.substr(1)
+      continue if !obj.trim()
+      try append.push qs.parse(obj)
+      continue
+
+    if typeof obj is 'object' and obj
+      append.push obj
+      continue
+
+  return urlStr if !append.length
+
+  appendObj = {}
+
+  for x in append
+    appendObj[k] = v for k, v of x
+
+  url.resolve(urlStr, '?' + qs.stringify(appendObj))
+
+helpers.sha256 = (str, salt = null, globalSalt = false) ->
+  hash = crypto.createHash 'sha256'
+
+  hashStr = str
+
+  if salt then hashStr += salt
+  if globalSalt then hashStr += env.GLOBAL_SALT
+
+  hash.update hashStr
+  hash.digest 'hex'
+
+helpers.sortObject = (obj) ->
+  if Array.isArray(obj)
+    return obj.map(helpers.sortObject)
+  else if typeof obj is 'object' and obj isnt null
+    sorted = {}
+    Object.keys(obj).sort().forEach (key) ->
+      sorted[key] = helpers.sortObject(obj[key])
+    return sorted
+  else
+    return obj
+
+helpers.integrityHash = (obj, returnDetails = false) ->
+  clone = _.cloneDeep(obj)
+  delete clone.integrityHash if clone.integrityHash?
+
+  sortedClone = helpers.sortObject(clone)
+  cloneString = JSON.stringify(sortedClone)
+
+  integritySalt = "integrity:#{cloneString.length}"
+  firstHash = helpers.sha256(cloneString)
+  secondHash = helpers.sha256(firstHash, integritySalt, false)
+
+  if returnDetails
+    return {
+      integritySalt
+      firstHash
+      secondHash
+      integrityHash: secondHash
+    }
+
+  return secondHash
+
+helpers.validateIntegrityHash = (obj, providedHash = null) ->
+  return false if typeof obj isnt 'object'
+
+  if providedHash?
+    hashToValidate = providedHash
+    objToHash = obj
+  else if obj.integrityHash?
+    hashToValidate = obj.integrityHash
+    objToHash = _.cloneDeep(obj)
+    delete objToHash.integrityHash
+  else
+    return false
+
+  calculatedHash = helpers.integrityHash(objToHash)
+  return calculatedHash is hashToValidate
+
 module.exports = helpers
+
+if !module.parent
+  testObj = {
+    "birth_date": "07/09/1942",
+    "city": "Coraopolis",
+    "group": null,
+    "email": "taky@taky.com",
+    "fname": "taky",
+    "social": "805-37-770",
+    "identity_document_expiration": "01/01/2025",
+    "identity_document_issuer": "USA",
+    "identity_document_number": "10ABC51239",
+    "identity_document_type": "Passport",
+    "lname": "PERSINGER",
+    "phone": "18149233715",
+    "zip": "15108",
+    "state": "PA",
+    "street": "1045 W 27th",
+    "document_tokens": {
+      "front": "bc3e79f0b4ed4ecb88b396b61fa7b9b5",
+      "back": "3ddf918d43494e5ca7938d1ec54ec3a1"
+    },
+    "uuid": "97f5d43181c94b6f860043ece08102c5",
+    "fullAddress": "310 Scenic Ct, Coraopolis, PA 15108"
+  }
+
+  testObj2 = {
+    "fullAddress": "310 Scenic Ct, Coraopolis, PA 15108"
+    "birth_date": "07/09/1942",
+    "city": "Coraopolis",
+    "group": null,
+    "email": "taky@taky.com",
+    "fname": "taky",
+    "identity_document_expiration": "01/01/2025",
+    "social": "805-37-770",
+    "identity_document_issuer": "USA",
+    "identity_document_number": "10ABC51239",
+    "identity_document_type": "Passport",
+    "lname": "PERSINGER",
+    "phone": "18149233715",
+    "zip": "15108",
+    "state": "PA",
+    "street": "1045 W 27th",
+    "document_tokens": {
+      "front": "bc3e79f0b4ed4ecb88b396b61fa7b9b5",
+      "back": "3ddf918d43494e5ca7938d1ec54ec3a1"
+    },
+    "uuid": "97f5d43181c94b6f860043ece08102c5",
+  }
+
+  log /testObj/, testObj
+  log /integrityHash/, integrityHash = helpers.integrityHash(testObj, true)
+  log /normalSha/, integrityHash.firstHash
+  log /validateIntegrityHash/, helpers.validateIntegrityHash(testObj, integrityHash.integrityHash)
+
+  log '----------------'
+
+  for x in [1..2]
+    log /testObj2/, testObj2
+    log /integrityHash2/, integrityHash2 = helpers.integrityHash(testObj2, true)
+    log /normalSha2/, integrityHash2.firstHash
+    log /validateIntegrityHash2/, helpers.validateIntegrityHash(testObj2, integrityHash2.integrityHash)
+    if x is 1
+      try delete testObj2.zip
+
+  log '----------------'
+
+  testObj3 = _.cloneDeep(testObj2)
+  testObj3.integrityHash = helpers.integrityHash(testObj3)
+
+  log /testObj3/, testObj3
+  log /integrityHash3/, integrityHash3 = helpers.integrityHash(testObj3, true)
+  log /validateIntegrityHash3/, helpers.validateIntegrityHash(testObj3)
+
+  exit 0
 

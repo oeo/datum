@@ -1,6 +1,7 @@
 # vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2
 { env, exit } = process
 { log, L } = require './logger'
+{ emit } = require './emitter'
 
 _ = require 'lodash'
 
@@ -25,7 +26,7 @@ mongoose.connect env.MONGODB_URI
   .catch (error) -> L.error error
   .then ->
     connections.mongo = true
-    L.success 'connected to mongo'
+    L 'connected to mongo'
   .catch (error) -> L.error error
 
 # redis
@@ -33,7 +34,7 @@ redis = new IORedis(redisOptions)
   .on 'error', (error) -> L.error error
   .on 'connect', ->
     connections.redis = true
-    L.success 'connected to redis'
+    L 'connected to redis'
 
 # ready promise
 connected = ready = ->

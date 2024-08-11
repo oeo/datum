@@ -18,8 +18,12 @@ modelRouter = (({ model }) ->
     for x in _.keys(model.schema.methods)
       continue if x !in opt.methods
 
+      if x.startsWith('_')
+        # L "skipping `#{model.modelName}.methods.#{x}()` (private)"
+        continue
+
       do (x) =>
-        L.note "binding `#{model.modelName}.methods.#{x}()` to `POST #{model.EXPOSE.route}/:_id/#{x}`"
+        L.note "binding `#{model.modelName}.methods.#{x}()` to POST #{model.EXPOSE.route}/:_id/#{x}"
 
         router.post "/:_id/#{x}", (req,res,next) ->
           try
@@ -43,8 +47,12 @@ modelRouter = (({ model }) ->
     for x in _.keys(model.schema.statics)
       continue if x !in opt.statics
 
+      if x.startsWith('_')
+        # L "skipping `#{model.modelName}.statics.#{x}()` (private)"
+        continue
+
       do (x) =>
-        L.note "binding `#{model.modelName}.statics.#{x}()` to `POST #{model.EXPOSE.route}/#{x}`"
+        L.note "binding `#{model.modelName}.statics.#{x}()` to POST #{model.EXPOSE.route}/#{x}"
 
         router.post "/#{x}", (req,res,next) ->
           try
@@ -53,7 +61,7 @@ modelRouter = (({ model }) ->
             return next e
           return res.respond r
 
-  L.note "creating crud routes for `#{model.modelName}` to `#{model.EXPOSE.route}`"
+  L.note "creating crud routes for `#{model.modelName}` to #{model.EXPOSE.route}"
 
   # bind create
   router.post '/', (req,res,next) ->

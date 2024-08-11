@@ -1,8 +1,8 @@
 # vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2
-{ log, L } = require './lib/logger.coffee'
+{ log, L } = require './lib/logger'
 { env, exit } = process
 
-require './lib/env.coffee'
+require './lib/env'
 
 # log ascii art
 fs = require 'fs'
@@ -64,6 +64,9 @@ for _k, model of (require './models')
   catch e
     throw e
 
+# expose some routes
+# app.use '/public', require('./routes/public')
+
 # catch errors
 app.use (e,req,res,next) ->
   L.error e
@@ -76,6 +79,7 @@ app.use (req,res,next) ->
   for x in [
     'favicon'
     'robots.txt'
+    'sitemap.xml'
   ]
     if req.url.includes(x)
       doIgnore = true
@@ -89,6 +93,10 @@ app.use (req,res,next) ->
 module.exports = app
 
 if !module.parent
-  app.listen (localPort = 8000), ->
+  { ready } = require(__dirname + '/lib/database')
+  await ready()
+
+  app.listen (localPort = env.LOCAL_PORT ? 8000), ->
     L.log "listening :#{localPort}"
+
 

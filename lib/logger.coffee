@@ -1,4 +1,6 @@
 # vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2
+{ log } = console
+
 signale = require 'signale'
 { Signale } = signale
 
@@ -8,13 +10,16 @@ signale.config(signaleConfig = {
   displayDate: false
   displayFilename: false
   displayLabel: false
-  displayTimestamp: false
+  displayTimestamp: true
   underlineLabel: false
   underlineMessage: false
   underlinePrefix: false
   underlineSuffix: false
   uppercaseLabel: false
 })
+
+baseFolder = ->
+  require('path').resolve(__dirname + './..')
 
 getCallerFile = () ->
   originalFunc = Error.prepareStackTrace
@@ -25,10 +30,11 @@ getCallerFile = () ->
   stack[2]?.getFileName()
 
 L = (args...) ->
-  callerFile = getCallerFile()
-  scope = callerFile.split('/api/').pop()
+  scope = getCallerFile()
+    .split(baseFolder() + '/')
+    .join('')
   logger = new Signale({ scope, config: signaleConfig })
-  logger.info args...
+  logger.log args...
 
 # attach other Signale methods to L
 methods = """
@@ -54,12 +60,12 @@ methods = """
 for method in methods
   do (method) ->
     L[method] = (args...) ->
-      callerFile = getCallerFile()
-      scope = callerFile.split('/api/').pop()
+      scope = getCallerFile()
+        .split(baseFolder() + '/')
+        .join('')
+
       logger = new Signale({ scope, config: signaleConfig })
       logger[method] args...
-
-{ log } = console
 
 module.exports = { L, log }
 

@@ -6,6 +6,7 @@ _ = require 'lodash'
 pluralize = require 'pluralize'
 
 helpers = require './helpers'
+{ emit } = require './emitter'
 
 models = {}
 
@@ -24,7 +25,7 @@ models.basePlugin = (schema) ->
     next()
 
   # reset to default
-  schema.methods.resetPath = (fieldPath) ->
+  schema.methods._resetPath = (fieldPath) ->
     pathParts = _.toPath(fieldPath)
     lastKey = _.last(pathParts)
 
@@ -35,21 +36,6 @@ models.basePlugin = (schema) ->
 
     defaultValue = lastSchema?.options?.default
     _.set(@, fieldPath, _.cloneDeep(defaultValue) ? undefined)
-
-  schema.methods.record = (opt = {}) ->
-    if !opt.event
-      throw new Error '`opt.event` required'
-
-    # singularize the model name
-    entityName = mname = @constructor.modelName.toLowerCase()
-    entityName = pluralize.singular(entityName)
-
-    eventObj = { _id: helpers.uuid() }
-    eventObj[entityName] = @_id
-    eventObj[k] ?= v for k,v of opt
-    eventObj.ctime = helpers.time()
-
-    L.info 'record', eventObj
 
 # auto expose model to rest
 models.EXPOSE = (model, opts = {}) ->
