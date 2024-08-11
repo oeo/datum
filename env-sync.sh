@@ -1,6 +1,6 @@
 #!/bin/bash
 
-S3_BUCKET="datum-env1"
+S3_BUCKET="datum-env3"
 S3_REGION="us-east-1"
 AWS_PROFILE=""
 

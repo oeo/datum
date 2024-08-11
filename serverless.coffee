@@ -35,7 +35,7 @@ getEnvFile = ->
 loadEnv = (file) ->
   envObj = dotenv.parse(fs.readFileSync(file))
   envObj.STAGE = NODE_ENV
-  
+
   # Check required variables
   for requiredVar in requiredVars
     if !envObj[requiredVar]
@@ -66,6 +66,7 @@ module.exports = {
   service: packageJson.name
   provider: {
     name: 'aws'
+    profile: 'default'
     runtime: 'nodejs18.x'
     stage: NODE_ENV
     environment: envObj
